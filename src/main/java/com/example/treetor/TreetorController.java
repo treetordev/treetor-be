@@ -20,7 +20,12 @@ public class TreetorController {
     @PostMapping("/upload")
     public ResponseEntity<String> uploadExcel(@RequestParam("file") MultipartFile file) {
         List<JobPosts> jobPosts = treetorService.parseExcelFile(file);
-        treetorService.saveJobPosts(jobPosts);
         return ResponseEntity.ok("done");
+    }
+
+    @GetMapping("/getAllTodaysPost")
+    public ResponseEntity<List<JobPosts>> getTodaysPosts(){
+       List<JobPosts> posts= treetorService.getAllTodaysPost();
+       return ResponseEntity.ok(posts);
     }
 }

@@ -5,7 +5,6 @@ import com.example.treetor.repository.TreetorRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -64,11 +63,10 @@ public class TreetorService {
             throw new RuntimeException("Error processing Excel file: " + e.getMessage());
         }
         treetorRepository.saveAll(jobposts);
-
         return jobposts;
     }
 
-    public void saveJobPosts(List<JobPosts> jobPosts) {
-
+    public List<JobPosts> getAllTodaysPost() {
+       return  treetorRepository.findByDate(LocalDate.now());
     }
 }
