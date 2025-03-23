@@ -2,6 +2,8 @@ package com.example.treetor.service;
 
 import com.example.treetor.entity.UserModel;
 import com.example.treetor.repository.UserRepository;
+import com.example.treetor.response.UserDetailsUiResponse;
+import com.example.treetor.utility.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,4 +46,9 @@ public class UserService {
         }
         return null;
     }
+
+	public UserDetailsUiResponse getUserDetailsByEmail(String email) {
+		UserModel user = repo.findByEmail(email).orElseThrow((()-> new RuntimeException("User Not Found!!")));
+		return CommonHelper.convertToUserDetailsUiResponse(user);
+	}
 }
