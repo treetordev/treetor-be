@@ -1,9 +1,8 @@
-package com.example.treetor;
+package com.example.treetor.controller;
 
 import com.example.treetor.entity.JobPosts;
 import com.example.treetor.service.TreetorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
