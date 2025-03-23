@@ -31,5 +31,5 @@ class JwtConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration builder) throws Exception {
         return builder.getAuthenticationManager();
     }
-
+//a=new xi commenet
 }
