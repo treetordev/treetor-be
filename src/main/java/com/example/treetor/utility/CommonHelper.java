@@ -2,12 +2,11 @@ package com.example.treetor.utility;
 
 
 
+import com.example.treetor.entity.Skills;
 import com.example.treetor.entity.UserModel;
 import com.example.treetor.response.UserDetailsUiResponse;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CommonHelper {
 
@@ -31,15 +30,18 @@ public class CommonHelper {
 	public static UserDetailsUiResponse convertToUserDetailsUiResponse(UserModel userByUserKey) {
 		// TODO Auto-generated method stub
 		UserDetailsUiResponse uiResponse = new UserDetailsUiResponse();
-		uiResponse.setAbout(userByUserKey.getAbout());
 		uiResponse.setEmail(userByUserKey.getEmail());
 		uiResponse.setName(userByUserKey.getName());
 		uiResponse.setUserKey(userByUserKey.getUserKey());
 		uiResponse.setRoles(userByUserKey.getRoles());
 		uiResponse.setUserKey(userByUserKey.getUserKey());
 		uiResponse.setUserDetailsId(userByUserKey.getUserDetailsId());
-	
+		Set<Skills> skills = userByUserKey.getSkills();
+		Set<String> skillResponse = new HashSet<>();
+		for(Skills skills1: skills){
+			skillResponse.add(skills1.getName());
+		}
+		uiResponse.setSkills(skillResponse);
 		return uiResponse;
 	}
-
 }

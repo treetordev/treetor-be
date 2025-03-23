@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
@@ -31,10 +33,17 @@ public class UserModel implements UserDetails {
 	private String name;
 	private String email;
 	private String password;
-	private String about;
+
 	private String roles;
 	private String userKey;
 	private String userDetailsId;
+	@ManyToMany(fetch = FetchType.EAGER) // Load skills eagerly
+	@JoinTable(
+			name = "user_skills", // Corrected join table name
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "skill_id")
+	)
+	private Set<Skills> skills = new HashSet<>();
 
 	@JsonIgnore
 	@OneToOne(mappedBy = "user")

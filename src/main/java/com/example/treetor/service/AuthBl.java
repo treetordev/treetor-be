@@ -2,7 +2,9 @@ package com.example.treetor.service;
 
 
 import com.example.treetor.entity.RefreshToken;
+import com.example.treetor.entity.Skills;
 import com.example.treetor.entity.UserModel;
+import com.example.treetor.repository.SkillsRepository;
 import com.example.treetor.request.CreateUserUiRequest;
 import com.example.treetor.request.JwtRequest;
 import com.example.treetor.request.RefreshTokenRequest;
@@ -16,6 +18,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class AuthBl {
@@ -40,6 +45,9 @@ public class AuthBl {
 	
 	@Autowired
 	CustomUserDetailsService userDetailsService;
+
+	@Autowired
+	SkillsRepository skillRepository;
 
 	public void doAuthenticate(String email, String password) {
 
@@ -81,12 +89,24 @@ public class AuthBl {
 	public Boolean createUser(CreateUserUiRequest req) {
 
 		UserModel model = new UserModel();
-		model.setAbout(req.getAbout());
+
 		model.setEmail(req.getEmail().toLowerCase());
 		model.setName(req.getName());
 		model.setPassword(req.getPassword());
 		model.setRoles(req.getRole());
 		model.setUserKey(CommonHelper.generateUserKey());
+		Set<Skills> skillSet = new HashSet<>();
+		for (String skillName : req.getSkills()) {
+			Skills skill = skillRepository.findByName(skillName)
+					.orElseGet(() -> {
+						Skills newSkill = new Skills();
+						newSkill.setName(skillName);
+						return skillRepository.save(newSkill); // Save new skill if it doesn't exist
+					});
+			skillSet.add(skill);
+		}
+
+		model.setSkills(skillSet);
 		 UserModel createUser = userService.createUser(model);
 		 if(createUser!=null)
 			 return true;
