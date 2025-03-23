@@ -12,6 +12,7 @@ import com.example.treetor.response.JwtResponse;
 import com.example.treetor.response.UserDetailsUiResponse;
 import com.example.treetor.utility.CommonHelper;
 import com.example.treetor.utility.TokenGenerator;
+import com.example.treetor.utility.UnauthenticUserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.security.auth.login.LoginException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -56,7 +58,7 @@ public class AuthBl {
 			manager.authenticate(authentication);
 
 		} catch (Exception e) {
-			//throw new ProviderCustomException(ErrorCodes.LOGIN_Exception, ErrorMessages.getErrorMessages().get(ErrorCodes.LOGIN_Exception));
+			throw new RuntimeException("wrong creds");
 		}
 
 	}
