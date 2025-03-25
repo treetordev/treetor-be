@@ -53,7 +53,7 @@ public class SecurityConfig {
 						  .requestMatchers("/auth/**").permitAll()
 						  .requestMatchers("/contract/**").permitAll()
 						  .requestMatchers("/file/**").permitAll()
-					.anyRequest().authenticated()
+					.anyRequest().permitAll()
 	        )
 	        .exceptionHandling(ex -> ex.authenticationEntryPoint(point))
 	        .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);

@@ -23,7 +23,7 @@ public class TreetorService {
     @Autowired
     TreetorRepository treetorRepository;
 
-    public List<JobPosts> parseExcelFile(MultipartFile file) {
+    public List<JobPosts> parseExcelFile(MultipartFile file, LocalDate date) {
         List<JobPosts> jobposts = new ArrayList<>();
 
         try (InputStream inputStream = file.getInputStream();
@@ -41,29 +41,29 @@ public class TreetorService {
                 if (row.getPhysicalNumberOfCells() < 3) continue;
 
                 JobPosts post = new JobPosts();
-                post.setLink(row.getCell(0).getStringCellValue());
-                post.setPostContent(row.getCell(1).getStringCellValue());
-                post.setLeadLocation(row.getCell(2).getStringCellValue());
-                post.setLeadLocation(row.getCell(2).getStringCellValue());
-                post.setLeadLocation(row.getCell(2).getStringCellValue());
-
-                // Handle numeric values safely
-                Cell dateCell = row.getCell(3);
-                if (dateCell != null && dateCell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(dateCell)) {
-                    Date date = dateCell.getDateCellValue();
-                    LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                    post.setDatePosted(localDate);
-                } else {
-                    post.setDatePosted(LocalDate.now());
-                }
+                post.setLink(getCellValueAsString(row.getCell(0)));
+                post.setPostContent(getCellValueAsString(row.getCell(1)));
+                post.setLeadLocation(getCellValueAsString(row.getCell(2)));
+                post.setDatePosted(date); // Use provided date instead of reading from Excel
 
                 jobposts.add(post);
             }
         } catch (IOException e) {
             throw new RuntimeException("Error processing Excel file: " + e.getMessage());
         }
+
         treetorRepository.saveAll(jobposts);
         return jobposts;
+    }
+
+    private String getCellValueAsString(Cell cell) {
+        if (cell == null) return "";
+        switch (cell.getCellType()) {
+            case STRING: return cell.getStringCellValue().trim();
+            case NUMERIC: return String.valueOf(cell.getNumericCellValue());
+            case BOOLEAN: return String.valueOf(cell.getBooleanCellValue());
+            default: return "";
+        }
     }
 
     public List<JobPosts> getAllTodaysPost() {

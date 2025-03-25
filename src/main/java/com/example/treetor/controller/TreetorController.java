@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -17,9 +18,9 @@ public class TreetorController {
     TreetorService treetorService;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadExcel(@RequestParam("file") MultipartFile file) {
-        List<JobPosts> jobPosts = treetorService.parseExcelFile(file);
-        return ResponseEntity.ok("done");
+    public ResponseEntity<List<JobPosts>> uploadExcel(@RequestParam("file") MultipartFile file, @RequestParam LocalDate date) {
+        List<JobPosts> jobPosts = treetorService.parseExcelFile(file,date);
+        return ResponseEntity.ok(jobPosts);
     }
 
     @GetMapping("/getAllTodaysPost")
