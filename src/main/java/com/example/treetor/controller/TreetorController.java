@@ -23,9 +23,9 @@ public class TreetorController {
         return ResponseEntity.ok(jobPosts);
     }
 
-    @GetMapping("/getAllTodaysPost")
-    public ResponseEntity<List<JobPosts>> getTodaysPosts(){
-       List<JobPosts> posts= treetorService.getAllTodaysPost();
+    @GetMapping("/getAllLeadsByDate")
+    public ResponseEntity<List<JobPosts>> getAllLeadsByDate(@RequestParam LocalDate date){
+       List<JobPosts> posts= treetorService.getAllTodaysPost(date);
        return ResponseEntity.ok(posts);
     }
 }

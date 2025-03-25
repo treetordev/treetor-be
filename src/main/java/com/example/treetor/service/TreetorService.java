@@ -66,7 +66,7 @@ public class TreetorService {
         }
     }
 
-    public List<JobPosts> getAllTodaysPost() {
-       return  treetorRepository.findByDate(LocalDate.now());
+    public List<JobPosts> getAllTodaysPost(LocalDate date) {
+       return  treetorRepository.findByDate(date);
     }
 }
