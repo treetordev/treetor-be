@@ -28,4 +28,14 @@ public class TreetorController {
        List<JobPosts> posts= treetorService.getAllTodaysPost(date);
        return ResponseEntity.ok(posts);
     }
+
+    @GetMapping("/getAllJobDomains")
+    public List<String> getAllJobDomains(){
+        return treetorService.getAllJobDomains();
+    }
+
+    @GetMapping("/getAllUsers")
+    public List<String> getAllUsers(){
+        return treetorService.getAllUsers();
+    }
 }

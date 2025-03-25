@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
@@ -24,6 +23,22 @@ public class JobPosts {
     private String leadLocation;
     private String comments;
     private LocalDate datePosted;
+    private String leadsDomain;
+    public Long getPostId() {
+        return postId;
+    }
+
+    public void setPostId(Long postId) {
+        this.postId = postId;
+    }
+
+    public String getLeadsDomain() {
+        return leadsDomain;
+    }
+
+    public void setLeadsDomain(String leadsDomain) {
+        this.leadsDomain = leadsDomain;
+    }
 
     public String getLink() {
         return link;

@@ -1,7 +1,9 @@
 package com.example.treetor.service;
 
 import com.example.treetor.entity.JobPosts;
+import com.example.treetor.entity.UserModel;
 import com.example.treetor.repository.TreetorRepository;
+import com.example.treetor.repository.UserRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class TreetorService {
 
     @Autowired
     TreetorRepository treetorRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     public List<JobPosts> parseExcelFile(MultipartFile file, LocalDate date) {
         List<JobPosts> jobposts = new ArrayList<>();
@@ -44,6 +49,7 @@ public class TreetorService {
                 post.setLink(getCellValueAsString(row.getCell(0)));
                 post.setPostContent(getCellValueAsString(row.getCell(1)));
                 post.setLeadLocation(getCellValueAsString(row.getCell(2)));
+                post.setLeadsDomain(getCellValueAsString(row.getCell(3)));
                 post.setDatePosted(date); // Use provided date instead of reading from Excel
 
                 jobposts.add(post);
@@ -68,5 +74,23 @@ public class TreetorService {
 
     public List<JobPosts> getAllTodaysPost(LocalDate date) {
        return  treetorRepository.findByDate(date);
+    }
+
+    public List<String> getAllJobDomains() {
+        return treetorRepository.getAllJobDomains();
+    }
+
+    public List<String> getAllUsers() {
+        List<UserModel> allUsersFromDb = userRepository.findAll();
+        List<String> responses = new ArrayList<>();
+        String response="";
+        for(UserModel user :allUsersFromDb){
+            if(user.getRoles().equalsIgnoreCase("USER")){
+                response= user.getName()+ "--(" +user.getEmail()+")";
+                responses.add(response);
+                response="";
+            }
+        }
+        return responses;
     }
 }

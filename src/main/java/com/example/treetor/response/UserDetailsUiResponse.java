@@ -13,5 +13,6 @@ public class UserDetailsUiResponse {
     private String roles;
     private String email;
     private String userDetailsId;
+    private String domain;
 
 }

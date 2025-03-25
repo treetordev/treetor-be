@@ -14,4 +14,7 @@ public interface TreetorRepository extends JpaRepository<JobPosts, Long> {
 
     @Query("SELECT a FROM JobPosts a WHERE  a.datePosted = :date")
     List<JobPosts> findByDate(LocalDate date);
+
+    @Query("SELECT DISTINCT(j.leadsDomain) FROM JobPosts j")
+    List<String> getAllJobDomains();
 }
