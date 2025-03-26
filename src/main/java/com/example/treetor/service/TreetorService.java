@@ -14,9 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -111,7 +109,7 @@ public class TreetorService {
         return responses;
     }
 
-    public List<JobPosts> getAssignedPostByEmail(LocalDate date, String email) {
-        return jobAssignmentRepository.findJobPostsByEmailAndDate(email,date);
+    public List<JobPosts> getAssignedPostByEmail(LocalDate date, String email, String domain) {
+        return jobAssignmentRepository.findJobPostsByEmailAndDate(email,date,domain);
     }
 }

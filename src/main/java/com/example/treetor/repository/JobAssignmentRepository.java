@@ -14,7 +14,7 @@ import java.util.List;
 public interface JobAssignmentRepository extends JpaRepository<JobAssignment, Long> {
     List<JobAssignment> findByUserEmail(String userEmail);
     List<JobAssignment> findByJobPost_DatePosted(LocalDate datePosted);
-    @Query("SELECT ja.jobPost FROM JobAssignment ja WHERE ja.userEmail = :email AND ja.jobPost.datePosted = :datePosted")
-    List<JobPosts> findJobPostsByEmailAndDate(@Param("email") String email, @Param("datePosted") LocalDate datePosted);
+    @Query("SELECT ja.jobPost FROM JobAssignment ja WHERE ja.userEmail = :email AND ja.jobPost.datePosted = :datePosted AND ja.jobPost.leadsDomain = :domain")
+    List<JobPosts> findJobPostsByEmailAndDate(@Param("email") String email, @Param("datePosted") LocalDate datePosted,@Param("domain") String domain);
 
 }
