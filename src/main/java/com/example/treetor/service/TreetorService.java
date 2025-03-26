@@ -2,6 +2,7 @@ package com.example.treetor.service;
 
 import com.example.treetor.entity.JobPosts;
 import com.example.treetor.entity.UserModel;
+import com.example.treetor.repository.JobAssignmentRepository;
 import com.example.treetor.repository.TreetorRepository;
 import com.example.treetor.repository.UserRepository;
 import org.apache.poi.ss.usermodel.*;
@@ -27,6 +28,9 @@ public class TreetorService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    JobAssignmentRepository jobAssignmentRepository;
 
     public List<JobPosts> parseExcelFile(MultipartFile file, LocalDate date) {
         List<JobPosts> jobposts = new ArrayList<>();
@@ -105,5 +109,9 @@ public class TreetorService {
             }
         }
         return responses;
+    }
+
+    public List<JobPosts> getAssignedPostByEmail(LocalDate date, String email) {
+        return jobAssignmentRepository.findJobPostsByEmailAndDate(email,date);
     }
 }

@@ -1,7 +1,9 @@
 package com.example.treetor.controller;
 
 import com.example.treetor.entity.JobPosts;
+import com.example.treetor.request.AssignJobPostsRequest;
 import com.example.treetor.service.TreetorService;
+import com.example.treetor.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,9 @@ public class TreetorController {
 
     @Autowired
     TreetorService treetorService;
+
+    @Autowired
+    UserService userService;
 
     @PostMapping("/upload")
     public ResponseEntity<List<JobPosts>> uploadExcel(@RequestParam("file") MultipartFile file, @RequestParam LocalDate date) {
@@ -37,6 +42,19 @@ public class TreetorController {
     @GetMapping("/getAllUsers")
     public List<String> getAllUsers(){
         return treetorService.getAllUsers();
+    }
+
+    @PostMapping("/assign")
+    public ResponseEntity<String> assignJobPosts(@RequestBody AssignJobPostsRequest request) {
+        userService.assignJobPostsToUser(request);
+        return ResponseEntity.ok("Job posts assigned successfully");
+    }
+
+    @GetMapping("getAssignedPostByEmail")
+    public ResponseEntity<List<JobPosts>> getAssignedPostByEmail(@RequestParam LocalDate date,
+                                                                 @RequestParam String email){
+        List<JobPosts> posts= treetorService.getAssignedPostByEmail(date,email);
+        return ResponseEntity.ok(posts);
     }
 }
 
