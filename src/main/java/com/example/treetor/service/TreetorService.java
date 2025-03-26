@@ -28,47 +28,24 @@ public class TreetorService {
     @Autowired
     UserRepository userRepository;
 
-    public List<JobPosts> parseExcelFile(MultipartFile file, LocalDate date) {
-        List<JobPosts> jobposts = new ArrayList<>();
-
-        try (InputStream inputStream = file.getInputStream();
-             Workbook workbook = new XSSFWorkbook(inputStream)) {
-
-            Sheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> rows = sheet.iterator();
-
-            if (rows.hasNext()) rows.next(); // Skip the first row (header)
-
-            while (rows.hasNext()) {
-                Row row = rows.next();
-
-                // Ensure the row has at least 3 cells
-                if (row.getPhysicalNumberOfCells() < 3) continue;
-
-                JobPosts post = new JobPosts();
-                post.setLink(getCellValueAsString(row.getCell(0)));
-                post.setPostContent(getCellValueAsString(row.getCell(1)));
-                post.setLeadLocation(getCellValueAsString(row.getCell(2)));
-                post.setLeadsDomain(getCellValueAsString(row.getCell(3)));
-                post.setDatePosted(date); // Use provided date instead of reading from Excel
-
-                jobposts.add(post);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Error processing Excel file: " + e.getMessage());
-        }
-
-        treetorRepository.saveAll(jobposts);
-        return jobposts;
-    }
-
     private String getCellValueAsString(Cell cell) {
-        if (cell == null) return "";
+        if (cell == null) return ""; // Return empty string if cell is null
         switch (cell.getCellType()) {
-            case STRING: return cell.getStringCellValue().trim();
-            case NUMERIC: return String.valueOf(cell.getNumericCellValue());
-            case BOOLEAN: return String.valueOf(cell.getBooleanCellValue());
-            default: return "";
+            case STRING:
+                return cell.getStringCellValue().trim();
+            case NUMERIC:
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    return cell.getLocalDateTimeCellValue().toLocalDate().toString(); // Convert date to string
+                }
+                return String.valueOf((long) cell.getNumericCellValue()); // Handle numeric values correctly
+            case BOOLEAN:
+                return String.valueOf(cell.getBooleanCellValue());
+            case FORMULA:
+                return cell.getCellFormula();
+            case BLANK:
+            case ERROR:
+            default:
+                return ""; // Return empty string for blank or error cells
         }
     }
 
