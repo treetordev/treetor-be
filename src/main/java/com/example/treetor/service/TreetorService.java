@@ -28,6 +28,42 @@ public class TreetorService {
     @Autowired
     UserRepository userRepository;
 
+    public List<JobPosts> parseExcelFile(MultipartFile file, LocalDate date) {
+        List<JobPosts> jobposts = new ArrayList<>();
+
+        try (InputStream inputStream = file.getInputStream();
+             Workbook workbook = new XSSFWorkbook(inputStream)) {
+
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rows = sheet.iterator();
+
+            if (rows.hasNext()) rows.next(); // Skip the first row (header)
+
+            while (rows.hasNext()) {
+                Row row = rows.next();
+
+                // Ensure the row has at least 4 cells (including Leads Domain)
+                if (row.getPhysicalNumberOfCells() < 4) continue;
+
+                JobPosts post = new JobPosts();
+                post.setLink(getCellValueAsString(row.getCell(0)));
+                post.setPostContent(getCellValueAsString(row.getCell(1)));
+                post.setLeadLocation(getCellValueAsString(row.getCell(2)));
+                post.setLeadsDomain(getCellValueAsString(row.getCell(5))); // Ensure proper handling
+
+                post.setDatePosted(date); // Use provided date
+
+                jobposts.add(post);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error processing Excel file: " + e.getMessage());
+        }
+
+        treetorRepository.saveAll(jobposts);
+        return jobposts;
+    }
+
+
     private String getCellValueAsString(Cell cell) {
         if (cell == null) return ""; // Return empty string if cell is null
         switch (cell.getCellType()) {
