@@ -52,9 +52,8 @@ public class TreetorController {
 
     @GetMapping("getAssignedPostByEmail")
     public ResponseEntity<List<JobPosts>> getAssignedPostByEmail(@RequestParam LocalDate date,
-                                                                 @RequestParam String email,
-                                                                 @RequestParam String skill){
-        List<JobPosts> posts= treetorService.getAssignedPostByEmail(date,email,skill);
+                                                                 @RequestParam String email){
+        List<JobPosts> posts= treetorService.getAssignedPostByEmail(date,email);
         return ResponseEntity.ok(posts);
     }
 }

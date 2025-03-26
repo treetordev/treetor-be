@@ -109,7 +109,7 @@ public class TreetorService {
         return responses;
     }
 
-    public List<JobPosts> getAssignedPostByEmail(LocalDate date, String email, String domain) {
-        return jobAssignmentRepository.findJobPostsByEmailAndDate(email,date,domain);
+    public List<JobPosts> getAssignedPostByEmail(LocalDate date, String email) {
+        return jobAssignmentRepository.findJobPostsByEmailAndDate(email,date);
     }
 }
