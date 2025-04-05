@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TreetorService {
@@ -41,19 +42,24 @@ public class TreetorService {
 
             if (rows.hasNext()) rows.next(); // Skip the first row (header)
 
+            // Fetch all existing links from DB to avoid duplicates
+            Set<String> existingLinks = treetorRepository.findAllLinks(); // Custom method
+
             while (rows.hasNext()) {
                 Row row = rows.next();
 
-                // Ensure the row has at least 4 cells (including Leads Domain)
+                // Ensure the row has at least 4 cells
                 if (row.getPhysicalNumberOfCells() < 4) continue;
 
+                String link = getCellValueAsString(row.getCell(0));
+                if (existingLinks.contains(link)) continue; // Skip duplicate
+
                 JobPosts post = new JobPosts();
-                post.setLink(getCellValueAsString(row.getCell(0)));
+                post.setLink(link);
                 post.setPostContent(getCellValueAsString(row.getCell(1)));
                 post.setLeadLocation(getCellValueAsString(row.getCell(2)));
-                post.setLeadsDomain(getCellValueAsString(row.getCell(5))); // Ensure proper handling
-
-                post.setDatePosted(date); // Use provided date
+                post.setLeadsDomain(getCellValueAsString(row.getCell(5)));
+                post.setDatePosted(date);
 
                 jobposts.add(post);
             }
@@ -64,6 +70,7 @@ public class TreetorService {
         treetorRepository.saveAll(jobposts);
         return jobposts;
     }
+
 
 
     private String getCellValueAsString(Cell cell) {

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface TreetorRepository extends JpaRepository<JobPosts, Long> {
@@ -17,4 +18,7 @@ public interface TreetorRepository extends JpaRepository<JobPosts, Long> {
 
     @Query("SELECT DISTINCT(j.leadsDomain) FROM JobPosts j")
     List<String> getAllJobDomains();
+
+    @Query("SELECT j.link FROM JobPosts j")
+    Set<String> findAllLinks();
 }
