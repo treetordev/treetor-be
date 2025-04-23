@@ -59,6 +59,11 @@ public class UserModel implements UserDetails {
 		// TODO Auto-generated method stub
 		return this.email;
 	}
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return this.password;
+	}
 
 	@Override
 	public boolean isAccountNonExpired() {
