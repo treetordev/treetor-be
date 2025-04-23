@@ -7,6 +7,7 @@ import com.example.treetor.repository.JobAssignmentRepository;
 import com.example.treetor.repository.TreetorRepository;
 import com.example.treetor.repository.UserRepository;
 import com.example.treetor.request.AssignJobPostsRequest;
+import com.example.treetor.request.InvalidAndContactInfoRequest;
 import com.example.treetor.response.UserDetailsUiResponse;
 import com.example.treetor.utility.CommonHelper;
 import jakarta.transaction.Transactional;
@@ -35,6 +36,9 @@ public class UserService {
 
 	@Autowired
 	JobAssignmentRepository jobAssignmentRepository;
+
+	@Autowired
+	private EmailService emailService;
 
 	public UserService() {
 
@@ -76,4 +80,14 @@ public class UserService {
 		jobAssignmentRepository.saveAll(assignments);
 	}
 
+	public void markInvalid(InvalidAndContactInfoRequest request) {
+		int i = jobAssignmentRepository.markInvalid(request.getEmail(), request.getPostId());
+		if (i > 0) {
+			String subject = "Job Post Marked as Invalid";
+			String message = "User with email " + request.getEmail() + " has marked the post with ID " + request.getPostId() + " as invalid.";
+			emailService.sendEmail("manish.nupt@gmail.com", "manish.m1738108@gmail.com", "User marked your lead invalid",""," The user with email id as :"+request.getEmail()+"has marked the post assigned to him as invalid:"+request.getPostId());
+		} else {
+			throw new RuntimeException("No matching job assignment found for user: " +  request.getEmail() + " and postId: " +  request.getPostId());
+		}
+	}
 }

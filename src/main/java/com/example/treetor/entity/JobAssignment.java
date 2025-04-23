@@ -18,6 +18,25 @@ public class JobAssignment {
 
     private String userEmail;
 
+    public boolean isMarkedInvalid() {
+        return markedInvalid;
+    }
+
+    public void setMarkedInvalid(boolean markedInvalid) {
+        this.markedInvalid = markedInvalid;
+    }
+
+    public boolean isContactInfoRequested() {
+        return contactInfoRequested;
+    }
+
+    public void setContactInfoRequested(boolean contactInfoRequested) {
+        this.contactInfoRequested = contactInfoRequested;
+    }
+
+    private boolean markedInvalid;
+    private boolean contactInfoRequested;
+
     public Long getId() {
         return id;
     }
