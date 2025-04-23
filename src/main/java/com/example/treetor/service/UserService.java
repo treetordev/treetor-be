@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.example.treetor.service.EmailService.sendTransactionalEmail;
+
 @Service
 public class UserService {
 
@@ -85,7 +87,8 @@ public class UserService {
 		if (i > 0) {
 			String subject = "Job Post Marked as Invalid";
 			String message = "User with email " + request.getEmail() + " has marked the post with ID " + request.getPostId() + " as invalid.";
-			emailService.sendEmail("manish.nupt@gmail.com", "manish.m1738108@gmail.com", "User marked your lead invalid",""," The user with email id as :"+request.getEmail()+"has marked the post assigned to him as invalid:"+request.getPostId());
+
+			sendTransactionalEmail();
 		} else {
 			throw new RuntimeException("No matching job assignment found for user: " +  request.getEmail() + " and postId: " +  request.getPostId());
 		}

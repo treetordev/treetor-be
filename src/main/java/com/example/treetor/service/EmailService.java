@@ -1,8 +1,13 @@
 package com.example.treetor.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import org.springframework.web.client.RestTemplate;
 import sendinblue.ApiClient;
 import sendinblue.ApiException;
 import sendinblue.Configuration;
@@ -12,48 +17,50 @@ import sibModel.CreateSmtpEmail;
 import sibModel.SendSmtpEmail;
 import sibModel.SendSmtpEmailTo;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 @Service
 public class EmailService {
 
-    private final TransactionalEmailsApi apiInstance;
+    @Value("${brevo.api.key}")
+    private String brevoKey;
 
-    public EmailService(@Value("${brevo.api.key}") String apiKey) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
+    public static void sendTransactionalEmail() {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "https://api.brevo.com/v3/smtp/email";
 
-        // Configure API key authorization
-        ApiKeyAuth apiKeyAuth = (ApiKeyAuth) defaultClient.getAuthentication("api-key");
-        apiKeyAuth.setApiKey(apiKey);
+        // Headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("accept", "application/json");
+        headers.set("api-key", "YOUR_API_KEY"); // Replace with your actual API key
 
-        apiInstance = new TransactionalEmailsApi();
-    }
+        // Body
+        Map<String, Object> emailData = new HashMap<>();
 
-    public void sendEmail(String toEmail, String toName, String subject, String htmlContent, String textContent) {
-        SendSmtpEmail email = new SendSmtpEmail();
+        Map<String, String> sender = new HashMap<>();
+        sender.put("name", "Treetor Auto Mail");
+        sender.put("email", "manish.nupt@gmail.com");
 
-        // Set recipient(s)
-        SendSmtpEmailTo recipient = new SendSmtpEmailTo();
-        recipient.setEmail(toEmail);
-        recipient.setName(toName);
-        email.setTo(Arrays.asList(recipient));
+        Map<String, String> recipient = new HashMap<>();
+        recipient.put("email", "manish.m1738108@gmail.com");
+        recipient.put("name", "Dev Treetor");
 
-        // Set email subject
-        email.setSubject(subject);
+        List<Map<String, String>> toList = new ArrayList<>();
+        toList.add(recipient);
 
-        // Set email content - both HTML and plain text versions
-        email.setHtmlContent(htmlContent);
-        email.setTextContent(textContent);
+        emailData.put("sender", sender);
+        emailData.put("to", toList);
+        emailData.put("subject", "Hello world");
+        emailData.put("htmlContent", "<html><head></head><body><p>Hello,</p>This is my first transactional email sent from Brevo.</p></body></html>");
 
-        try {
-            // Send the email
-            CreateSmtpEmail response = apiInstance.sendTransacEmail(email);
-            System.out.println("Email sent successfully with ID: " + response.getMessageId());
-        } catch (ApiException e) {
-            System.err.println("Error sending email: " + e.getMessage());
-            e.printStackTrace();
-        }
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(emailData, headers);
+
+        // Send POST request
+        ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+
+        // Output response
+        System.out.println("Status Code: " + response.getStatusCode());
+        System.out.println("Response Body: " + response.getBody());
     }
 }
