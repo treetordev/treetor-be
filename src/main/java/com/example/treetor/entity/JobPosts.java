@@ -1,9 +1,6 @@
 package com.example.treetor.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -19,6 +16,7 @@ public class JobPosts {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
     private String link;
+    @Column(columnDefinition = "TEXT")
     private String postContent;
     private String leadLocation;
     private String comments;
