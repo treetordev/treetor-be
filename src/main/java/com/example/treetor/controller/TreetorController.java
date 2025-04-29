@@ -72,7 +72,7 @@ public class TreetorController {
         userService.saveLeadNotes(request);
         return ResponseEntity.ok("Job post marked invalid");
     }
-    @PostMapping("/getLeadNotes")
+    @GetMapping("/getLeadNotes")
     public ResponseEntity<String> getLeadNotes(@RequestParam String email, @RequestParam Long postId) {
         String resp= userService.getLeadNotes(email,postId);
         return ResponseEntity.ok(resp);
