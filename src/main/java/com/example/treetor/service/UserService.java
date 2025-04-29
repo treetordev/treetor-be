@@ -100,6 +100,6 @@ public class UserService {
 	}
 
 	public String getLeadNotes(String email, Long postId) {
-		jobAssignmentRepository.getLeadNotes(email,postId)
+		return jobAssignmentRepository.getLeadNotes(email,postId);
 	}
 }
