@@ -98,4 +98,8 @@ public class UserService {
 	public void saveLeadNotes(LeadNotesRequest request) {
 		jobAssignmentRepository.saveNotes(request.getEmail(),request.getPostId(),request.getNotes());
 	}
+
+	public String getLeadNotes(String email, Long postId) {
+		jobAssignmentRepository.getLeadNotes(email,postId)
+	}
 }
