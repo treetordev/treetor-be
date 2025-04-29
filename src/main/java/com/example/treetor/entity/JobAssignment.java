@@ -15,8 +15,21 @@ public class JobAssignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String userEmail;
+    private boolean markedInvalid;
+    private boolean contactInfoRequested;
+    @Column(columnDefinition = "TEXT")
+    private String notes;
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+
 
     public boolean isMarkedInvalid() {
         return markedInvalid;
@@ -33,9 +46,6 @@ public class JobAssignment {
     public void setContactInfoRequested(boolean contactInfoRequested) {
         this.contactInfoRequested = contactInfoRequested;
     }
-
-    private boolean markedInvalid;
-    private boolean contactInfoRequested;
 
     public Long getId() {
         return id;

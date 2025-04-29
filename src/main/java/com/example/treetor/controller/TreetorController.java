@@ -3,6 +3,7 @@ package com.example.treetor.controller;
 import com.example.treetor.entity.JobPosts;
 import com.example.treetor.request.AssignJobPostsRequest;
 import com.example.treetor.request.InvalidAndContactInfoRequest;
+import com.example.treetor.response.LeadNotesRequest;
 import com.example.treetor.service.TreetorService;
 import com.example.treetor.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,14 @@ public class TreetorController {
     @PostMapping("/markInvalid")
     public ResponseEntity<String> markInvalid(@RequestBody InvalidAndContactInfoRequest request) {
         userService.markInvalid(request);
+        return ResponseEntity.ok("Job post marked invalid");
+    }
+
+
+
+    @PostMapping("/saveLeadNotes")
+    public ResponseEntity<String> saveLeadNotes(@RequestBody LeadNotesRequest request) {
+        userService.saveLeadNotes(request);
         return ResponseEntity.ok("Job post marked invalid");
     }
 }

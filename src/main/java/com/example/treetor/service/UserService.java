@@ -8,6 +8,7 @@ import com.example.treetor.repository.TreetorRepository;
 import com.example.treetor.repository.UserRepository;
 import com.example.treetor.request.AssignJobPostsRequest;
 import com.example.treetor.request.InvalidAndContactInfoRequest;
+import com.example.treetor.response.LeadNotesRequest;
 import com.example.treetor.response.UserDetailsUiResponse;
 import com.example.treetor.utility.CommonHelper;
 import jakarta.transaction.Transactional;
@@ -92,5 +93,9 @@ public class UserService {
 		} else {
 			throw new RuntimeException("No matching job assignment found for user: " +  request.getEmail() + " and postId: " +  request.getPostId());
 		}
+	}
+
+	public void saveLeadNotes(LeadNotesRequest request) {
+		jobAssignmentRepository.saveNotes(request.getEmail(),request.getPostId(),request.getNotes());
 	}
 }

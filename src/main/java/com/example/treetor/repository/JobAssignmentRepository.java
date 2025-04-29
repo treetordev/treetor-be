@@ -2,6 +2,7 @@ package com.example.treetor.repository;
 
 import com.example.treetor.entity.JobAssignment;
 import com.example.treetor.entity.JobPosts;
+import com.example.treetor.response.LeadNotesRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,4 +24,9 @@ public interface JobAssignmentRepository extends JpaRepository<JobAssignment, Lo
     @Transactional
     @Query("UPDATE JobAssignment ja SET ja.markedInvalid = true WHERE ja.userEmail = :email AND ja.jobPost.id = :postId")
     int markInvalid(String email, Long postId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE JobAssignment ja SET ja.notes = :notes  WHERE ja.userEmail = :email AND ja.jobPost.id = :postId")
+    void saveNotes(String email,Long postId,String notes);
 }
