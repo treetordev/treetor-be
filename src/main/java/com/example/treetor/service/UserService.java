@@ -8,7 +8,7 @@ import com.example.treetor.repository.TreetorRepository;
 import com.example.treetor.repository.UserRepository;
 import com.example.treetor.request.AssignJobPostsRequest;
 import com.example.treetor.request.InvalidAndContactInfoRequest;
-import com.example.treetor.response.LeadNotesRequest;
+import com.example.treetor.request.LeadNotesRequest;
 import com.example.treetor.response.UserDetailsUiResponse;
 import com.example.treetor.utility.CommonHelper;
 import jakarta.transaction.Transactional;
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.example.treetor.service.EmailService.sendTransactionalEmail;
 
 @Service
 public class UserService {
@@ -89,7 +88,7 @@ public class UserService {
 			String subject = "Job Post Marked as Invalid";
 			String message = "User with email " + request.getEmail() + " has marked the post with ID " + request.getPostId() + " as invalid.";
 
-			sendTransactionalEmail();
+			emailService.sendSimpleEmail("manish.nupt@gmail.com",subject,message);
 		} else {
 			throw new RuntimeException("No matching job assignment found for user: " +  request.getEmail() + " and postId: " +  request.getPostId());
 		}

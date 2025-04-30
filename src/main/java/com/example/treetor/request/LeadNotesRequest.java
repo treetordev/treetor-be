@@ -1,4 +1,4 @@
-package com.example.treetor.response;
+package com.example.treetor.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -3,7 +3,7 @@ package com.example.treetor.controller;
 import com.example.treetor.entity.JobPosts;
 import com.example.treetor.request.AssignJobPostsRequest;
 import com.example.treetor.request.InvalidAndContactInfoRequest;
-import com.example.treetor.response.LeadNotesRequest;
+import com.example.treetor.request.LeadNotesRequest;
 import com.example.treetor.service.TreetorService;
 import com.example.treetor.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

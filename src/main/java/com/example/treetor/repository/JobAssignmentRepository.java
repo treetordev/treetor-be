@@ -2,7 +2,6 @@ package com.example.treetor.repository;
 
 import com.example.treetor.entity.JobAssignment;
 import com.example.treetor.entity.JobPosts;
-import com.example.treetor.response.LeadNotesRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
