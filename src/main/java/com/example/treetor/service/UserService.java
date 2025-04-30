@@ -101,4 +101,17 @@ public class UserService {
 	public String getLeadNotes(String email, Long postId) {
 		return jobAssignmentRepository.getLeadNotes(email,postId);
 	}
+
+	public void requestContactInfo(InvalidAndContactInfoRequest request) {
+
+		int i = jobAssignmentRepository.requestedContactInfo(request.getEmail(), request.getPostId());
+		if (i > 0) {
+			String subject = "Contact info requested";
+			String message = "User with email " + request.getEmail() + " has asked for the contact info of the post with ID " + request.getPostId() ;
+
+			emailService.sendSimpleEmail("manish.nupt@gmail.com",subject,message);
+		} else {
+			throw new RuntimeException("No matching job assignment found for user: " +  request.getEmail() + " and postId: " +  request.getPostId());
+		}
+	}
 }

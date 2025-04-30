@@ -31,4 +31,9 @@ public interface JobAssignmentRepository extends JpaRepository<JobAssignment, Lo
 
     @Query("SELECT ja.notes FROM JobAssignment ja WHERE ja.userEmail = :email AND ja.jobPost.id = :postId")
     String getLeadNotes(String email, Long postId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE JobAssignment ja SET ja.contactInfoRequested = true WHERE ja.userEmail = :email AND ja.jobPost.id = :postId")
+    int requestedContactInfo(String email, Long postId);
 }
