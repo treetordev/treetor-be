@@ -88,7 +88,7 @@ public class UserService {
 			String subject = "Job Post Marked as Invalid";
 			String message = "User with email " + request.getEmail() + " has marked the post with ID " + request.getPostId() + " as invalid.";
 
-			emailService.sendSimpleEmail("manish.nupt@gmail.com",subject,message);
+			emailService.sendSimpleEmail("care.treetor@gmail.com",subject,message);
 		} else {
 			throw new RuntimeException("No matching job assignment found for user: " +  request.getEmail() + " and postId: " +  request.getPostId());
 		}
@@ -109,7 +109,7 @@ public class UserService {
 			String subject = "Contact info requested";
 			String message = "User with email " + request.getEmail() + " has asked for the contact info of the post with ID " + request.getPostId() ;
 
-			emailService.sendSimpleEmail("manish.nupt@gmail.com",subject,message);
+			emailService.sendSimpleEmail("care.treetor@gmail.com",subject,message);
 		} else {
 			throw new RuntimeException("No matching job assignment found for user: " +  request.getEmail() + " and postId: " +  request.getPostId());
 		}
