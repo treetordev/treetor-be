@@ -1,10 +1,12 @@
 package com.example.treetor.service;
 
+import com.example.treetor.entity.JobAssignment;
 import com.example.treetor.entity.JobPosts;
 import com.example.treetor.entity.UserModel;
 import com.example.treetor.repository.JobAssignmentRepository;
 import com.example.treetor.repository.TreetorRepository;
 import com.example.treetor.repository.UserRepository;
+import com.example.treetor.response.JobPostsUiResponse;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,7 +118,25 @@ public class TreetorService {
         return responses;
     }
 
-    public List<JobPosts> getAssignedPostByEmail(LocalDate date, String email) {
-        return jobAssignmentRepository.findJobPostsByEmailAndDate(email,date);
+    public List<JobPostsUiResponse> getAssignedPostByEmail(LocalDate date, String email) {
+        List<JobAssignment> jobPostsByEmailAndDate = jobAssignmentRepository.findJobPostsByEmailAndDate(email, date);
+        List<JobPostsUiResponse> jobPostsUiResponseList = new ArrayList<>();
+        for(JobAssignment job :jobPostsByEmailAndDate){
+            JobPostsUiResponse jobPostsUiResponse = new JobPostsUiResponse();
+
+            jobPostsUiResponse.setPostId(job.getJobPost().getPostId());
+            jobPostsUiResponse.setDatePosted(job.getJobPost().getDatePosted());
+            jobPostsUiResponse.setLink(job.getJobPost().getLink());
+            jobPostsUiResponse.setLeadLocation(job.getJobPost().getLeadLocation());
+            jobPostsUiResponse.setPostContent(job.getJobPost().getPostContent());
+            jobPostsUiResponse.setLeadsDomain(job.getJobPost().getLeadsDomain());
+            jobPostsUiResponse.setInvalid(job.isMarkedInvalid());
+            jobPostsUiResponse.setRequestedContactInfo(job.isContactInfoRequested());
+            jobPostsUiResponse.setNotes(job.getNotes());
+
+            jobPostsUiResponseList.add(jobPostsUiResponse);
+        }
+
+        return jobPostsUiResponseList;
     }
 }

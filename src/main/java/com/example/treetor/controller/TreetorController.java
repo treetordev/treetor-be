@@ -4,6 +4,7 @@ import com.example.treetor.entity.JobPosts;
 import com.example.treetor.request.AssignJobPostsRequest;
 import com.example.treetor.request.InvalidAndContactInfoRequest;
 import com.example.treetor.request.LeadNotesRequest;
+import com.example.treetor.response.JobPostsUiResponse;
 import com.example.treetor.service.TreetorService;
 import com.example.treetor.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +54,9 @@ public class TreetorController {
     }
 
     @GetMapping("getAssignedPostByEmail")
-    public ResponseEntity<List<JobPosts>> getAssignedPostByEmail(@RequestParam LocalDate date,
-                                                                 @RequestParam String email){
-        List<JobPosts> posts= treetorService.getAssignedPostByEmail(date,email);
+    public ResponseEntity<List<JobPostsUiResponse>> getAssignedPostByEmail(@RequestParam LocalDate date,
+                                                                           @RequestParam String email){
+        List<JobPostsUiResponse> posts= treetorService.getAssignedPostByEmail(date,email);
         return ResponseEntity.ok(posts);
     }
 
