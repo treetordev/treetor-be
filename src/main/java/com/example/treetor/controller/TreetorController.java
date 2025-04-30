@@ -66,7 +66,7 @@ public class TreetorController {
         return ResponseEntity.ok("Job post marked invalid");
     }
 
-    @PostMapping("/requestContactInfo")
+    @PostMapping("/requestContact")
     public ResponseEntity<String> requestContactInfo(@RequestBody InvalidAndContactInfoRequest request) {
         userService.requestContactInfo(request);
         return ResponseEntity.ok("Requested contact info for the job post");
