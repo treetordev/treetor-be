@@ -14,11 +14,6 @@ public class GeminiConfig {
     @Value("${gemini.api.url:https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent}")
     private String apiUrl;
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
     public String getApiKey() {
         return apiKey;
     }
