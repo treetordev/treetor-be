@@ -4,6 +4,7 @@ import com.example.treetor.entity.JobAssignment;
 import com.example.treetor.entity.JobPosts;
 import com.example.treetor.entity.UserModel;
 import com.example.treetor.repository.JobAssignmentRepository;
+import com.example.treetor.repository.JobPostsRepository;
 import com.example.treetor.repository.TreetorRepository;
 import com.example.treetor.repository.UserRepository;
 import com.example.treetor.request.AssignJobPostsRequest;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -84,9 +86,12 @@ public class UserService {
 
 	public void markInvalid(InvalidAndContactInfoRequest request) {
 		int i = jobAssignmentRepository.markInvalid(request.getEmail(), request.getPostId());
+		JobPosts byId = jobPostsRepository.findById(request.getPostId()).get();
 		if (i > 0) {
 			String subject = "Job Post Marked as Invalid";
-			String message = "User with email " + request.getEmail() + " has marked the post with ID " + request.getPostId() + " as invalid.";
+			String message = "User with email " + request.getEmail() + " has marked the post with ID " + request.getPostId() + " as invalid."+"/n"
+					+ "Post link :"+byId.getLink()+"/n"
+					+"Post Content :"+byId.getPostContent();
 
 			emailService.sendSimpleEmail("care.treetor@gmail.com",subject,message);
 		} else {
@@ -105,9 +110,15 @@ public class UserService {
 	public void requestContactInfo(InvalidAndContactInfoRequest request) {
 
 		int i = jobAssignmentRepository.requestedContactInfo(request.getEmail(), request.getPostId());
+		JobPosts byId = jobPostsRepository.findById(request.getPostId()).get();
+
 		if (i > 0) {
 			String subject = "Contact info requested";
-			String message = "User with email " + request.getEmail() + " has asked for the contact info of the post with ID " + request.getPostId() ;
+			String message = "User with email " + request.getEmail() + " has asked for the contact info of the post with ID " +
+					request.getPostId() +"/n"
+					+ "Post link :"+byId.getLink()+"/n"
+					+"Post Content :"+byId.getPostContent();
+
 
 			emailService.sendSimpleEmail("care.treetor@gmail.com",subject,message);
 		} else {
