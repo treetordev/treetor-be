@@ -10,7 +10,7 @@ import java.util.*;
 @Service
 public class EmailService {
 
-    @Autowired
+   // @Autowired
     private JavaMailSender mailSender;
 
     public void sendSimpleEmail(String to, String subject, String text) {

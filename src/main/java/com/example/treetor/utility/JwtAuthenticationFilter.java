@@ -55,13 +55,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
 
             } catch (IllegalArgumentException e) {
-                log.info("Illegal Argument while fetching the username !!");
+                //log.info("Illegal Argument while fetching the username !!");
                 e.printStackTrace();
             } catch (ExpiredJwtException e) {
-                log.info("Given jwt token is expired !!");
+                //log.info("Given jwt token is expired !!");
                 e.printStackTrace();
             } catch (MalformedJwtException e) {
-                log.info("Some changed has done in token !! Invalid Token");
+                //log.info("Some changed has done in token !! Invalid Token");
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -90,7 +90,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
 
             } else {
-                log.info("Validation fails !!");
+                //log.info("Validation fails !!");
             }
 
 
